@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Admin - WestCoast Education" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <title>WestCoast Education | Admin</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="container">
+          <ul class="menu">
+            <li class="logo">
+              <a href="../../index.html">WestCoast Education</a>
+            </li>
+            <li class="menu-item">
+              <a href="../../index.html">Start</a>
+            </li>
+            <li class="menu-item">
+              <a href="../courses/courses.html">Kurser</a>
+            </li>
+            <li class="menu-item">
+              <a class="active" href="./admin.html">Admin</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <section class="container">
+          <h1>Administration</h1>
+
+          <div class="admin-grid">
+            <div class="admin-panel">
+              <h2>Lägg till kurs</h2>
+              <form id="add-course-form">
+                <div class="form-group">
+                  <label for="title">Kurstitel</label>
+                  <input type="text" id="title" name="title" placeholder="Kurstitel" required />
+                </div>
+                <div class="form-group">
+                  <label for="courseNumber">Kursnummer</label>
+                  <input type="text" id="courseNumber" name="courseNumber" placeholder="T.ex. JS101" required />
+                </div>
+                <div class="form-group">
+                  <label for="days">Antal dagar</label>
+                  <input type="number" id="days" name="days" placeholder="Antal dagar" required />
+                </div>
+                <div class="form-group">
+                  <label for="cost">Kostnad (kr)</label>
+                  <input type="number" id="cost" name="cost" placeholder="Pris i kr" required />
+                </div>
+                <div class="form-group">
+                  <label for="teacher">Lärare</label>
+                  <input type="text" id="teacher" name="teacher" placeholder="Lärarens namn" required />
+                </div>
+                <div class="form-group">
+                  <label for="startDate">Startdatum</label>
+                  <input type="date" id="startDate" name="startDate" required />
+                </div>
+                <div class="form-group">
+                  <label for="imageUrl">Bild-URL</label>
+                  <input type="text" id="imageUrl" name="imageUrl" placeholder="https://..." required />
+                </div>
+                <div class="form-group">
+                  <label for="description">Beskrivning</label>
+                  <textarea id="description" name="description" placeholder="Kursbeskrivning" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <input type="checkbox" name="classroom" value="true" /> Klassrum
+                  </label>
+                  <label>
+                    <input type="checkbox" name="distance" value="true" /> Distans
+                  </label>
+                  <label>
+                    <input type="checkbox" name="popular" value="true" /> Populär
+                  </label>
+                </div>
+                <button type="submit" class="btn">Lägg till kurs</button>
+              </form>
+            </div>
+
+            <div class="admin-panel">
+              <h2>Bokningar per kurs</h2>
+              <div id="bookings-list"></div>
+            </div>
+          </div>
+
+        </section>
+      </article>
+    </main>
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 WestCoast Education</p>
+      </div>
+    </footer>
+    <script src="./admin.js" type="module"></script>
+  </body>
+</html>

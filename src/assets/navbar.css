@@ -1,0 +1,63 @@
+@import './colors.css';
+
+header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  opacity: 0.9;
+  background: var(--primary-color);
+  box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.7);
+}
+
+nav {
+  padding: 0 1rem;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+}
+
+nav ul li.logo {
+  font-size: 1.6rem;
+}
+
+nav ul li.logo a {
+  color: var(--logo-color);
+}
+
+nav ul li.menu-item {
+  display: none;
+  width: 100%;
+  text-align: center;
+}
+
+nav ul li a {
+  display: block;
+  padding: 0.4rem;
+  color: var(--text-color-light);
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--text-color-active);
+}
+
+@media (min-width: 768px) {
+  nav ul {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  nav ul li.menu-item {
+    display: block;
+    width: auto;
+  }
+
+  nav ul li.logo {
+    flex: 1;
+  }
+}

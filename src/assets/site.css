@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@import './colors.css';
+@import './navbar.css';
+@import './utilities.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  line-height: 1.6;
+  background-color: var(--background-light);
+}
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Hero */
+#hero-area {
+  background: var(--primary-color);
+  color: var(--text-color-light);
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+#hero-area h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--logo-color);
+}
+
+#hero-area p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Courses grid */
+#courses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+#popular-courses {
+  padding: 2rem 0;
+}
+
+#popular-courses h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.course-title {
+  display: block;
+  padding: 0.75rem 1rem 0.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.course-date {
+  display: block;
+  padding: 0 1rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-color-dark);
+}
+
+/* Details */
+#details-area {
+  padding: 2rem 0;
+}
+
+#details-area .card {
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+}
+
+#details-area .card:hover {
+  transform: none;
+}
+
+#details-area .card img {
+  height: 300px;
+}
+
+.info {
+  padding: 1.5rem;
+}
+
+.info h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.info div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.info h3 {
+  margin-top: 1rem;
+  color: var(--primary-color);
+}
+
+.description {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.info .btn {
+  margin-top: 1.5rem;
+  background: var(--primary-color);
+}
+
+/* Booking form */
+
+.invalid {
+  border: 2px solid red !important;
+  border-radius: 0.4rem;
+}
+
+#add-course-form .btn {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-color-light);
+}
+
+#add-course-form .btn:hover {
+  background: var(--text-color-active);
+  border-color: var(--text-color-active);
+}
+
+.course-summary {
+  background: var(--primary-color);
+  color: var(--text-color-light);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.course-summary h2 {
+  color: var(--logo-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.4rem;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+#course-type {
+  display: flex;
+  gap: 1.5rem;
+}
+
+#course-type label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+/* Admin */
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.admin-panel {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.admin-panel h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.booking-group {
+  margin-bottom: 1.5rem;
+}
+
+.booking-group h3 {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--text-color-active);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.booking-item {
+  background: var(--background-light);
+  padding: 0.75rem;
+  border-radius: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.booking-item span {
+  font-weight: 600;
+}
+
+/* Footer */
+footer {
+  background: var(--primary-color);
+  color: var(--text-color-light);
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 3rem;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  #courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #details-area .card {
+    flex-direction: row;
+  }
+
+  #details-area .card img {
+    width: 40%;
+    height: auto;
+  }
+
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  #courses-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
