@@ -4,6 +4,12 @@ import { createCourseDetailsView } from '../../scripts/dom.js';
 const initApp = async () => {
   try {
     const courseId = location.search.split('=')[1];
+
+    if (!courseId) {
+      document.querySelector('#details-area').innerHTML = '<p>Ingen kurs vald.</p>';
+      return;
+    }
+
     const course = await new HttpClient('courses').findById(courseId);
     displayCourse(course);
   } catch (error) {

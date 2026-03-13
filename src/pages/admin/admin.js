@@ -1,16 +1,17 @@
 import HttpClient from '../../data/httpClient.js';
 
 const form = document.querySelector('#add-course-form');
-const editForm = document.querySelector('#edit-course-form');
 const bookingsList = document.querySelector('#bookings-list');
 const overlay = document.querySelector('#overlay');
 const dialog = document.querySelector('#modal');
 
 form.noValidate = true;
-editForm.noValidate = true;
 
 const initApp = async () => {
   try {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('#startDate').setAttribute('min', today);
+    document.querySelector('#edit-startDate').setAttribute('min', today);
     await displayBookings();
     await displayCourseList();
   } catch (error) {
@@ -22,15 +23,16 @@ const displayCourseList = async () => {
   const courses = await new HttpClient('courses').listAll();
   const coursesList = document.querySelector('#courses-list');
   coursesList.innerHTML = '';
+
   const header = document.createElement('div');
-header.classList.add('course-row', 'course-row-header');
-header.innerHTML = `
+  header.classList.add('course-row', 'course-row-header');
+  header.innerHTML = `
     <i></i>
     <div class="course-row-title">Kurstitel</div>
     <div class="course-row-number">Kursnummer</div>
     <div class="course-row-days">Dagar</div>
-    `;
-coursesList.appendChild(header);
+  `;
+  coursesList.appendChild(header);
 
   courses.map((course) => {
     const row = document.createElement('section');
@@ -41,21 +43,22 @@ coursesList.appendChild(header);
     icon.setAttribute('id', course.id);
     icon.addEventListener('click', displayCourseModal);
 
-    row.appendChild(icon);
     const titleDiv = document.createElement('div');
     titleDiv.classList.add('course-row-title');
     titleDiv.textContent = course.title;
-    row.appendChild(titleDiv);
 
     const numberDiv = document.createElement('div');
     numberDiv.classList.add('course-row-number');
     numberDiv.textContent = course.courseNumber;
-    row.appendChild(numberDiv);
 
-const daysDiv = document.createElement('div');
-daysDiv.classList.add('course-row-days');
-daysDiv.textContent = course.days + ' dagar';
-row.appendChild(daysDiv);
+    const daysDiv = document.createElement('div');
+    daysDiv.classList.add('course-row-days');
+    daysDiv.textContent = course.days + ' dagar';
+
+    row.appendChild(icon);
+    row.appendChild(titleDiv);
+    row.appendChild(numberDiv);
+    row.appendChild(daysDiv);
 
     coursesList.appendChild(row);
   });
@@ -70,6 +73,11 @@ const displayCourseModal = async (e) => {
   overlay.classList.add('show');
   dialog.classList.add('show');
 
+  const editForm = document.querySelector('#edit-course-form');
+  const newEditForm = editForm.cloneNode(true);
+  editForm.parentNode.replaceChild(newEditForm, editForm);
+  newEditForm.noValidate = true;
+
   populateModal(course);
 
   document.querySelector('#closeModal').addEventListener('click', (e) => {
@@ -78,10 +86,11 @@ const displayCourseModal = async (e) => {
     dialog.classList.remove('show');
   });
 
-  editForm.addEventListener('submit', (e) => updateCourse(e, courseId));
+  newEditForm.addEventListener('submit', (e) => updateCourse(e, courseId, newEditForm));
 };
 
 const populateModal = (course) => {
+  const editForm = document.querySelector('#edit-course-form');
   editForm.title.value = course.title;
   editForm.courseNumber.value = course.courseNumber;
   editForm.days.value = course.days;
@@ -95,24 +104,24 @@ const populateModal = (course) => {
   editForm.popular.checked = course.popular;
 };
 
-const updateCourse = async (e, courseId) => {
+const updateCourse = async (e, courseId, form) => {
   e.preventDefault();
 
-  const fields = Array.from(editForm.elements);
+  const fields = Array.from(form.elements);
   fields.forEach(f => f.classList.remove('invalid'));
 
-  editForm.title.validity.valueMissing ? editForm.title.setCustomValidity('Kurstitel måste anges') : editForm.title.setCustomValidity('');
-  editForm.courseNumber.validity.valueMissing ? editForm.courseNumber.setCustomValidity('Kursnummer måste anges') : editForm.courseNumber.setCustomValidity('');
-  editForm.days.validity.valueMissing ? editForm.days.setCustomValidity('Antal dagar måste anges') : editForm.days.setCustomValidity('');
-  editForm.cost.validity.valueMissing ? editForm.cost.setCustomValidity('Kostnad måste anges') : editForm.cost.setCustomValidity('');
-  editForm.reportValidity();
+  form.title.validity.valueMissing ? form.title.setCustomValidity('Kurstitel måste anges') : form.title.setCustomValidity('');
+  form.courseNumber.validity.valueMissing ? form.courseNumber.setCustomValidity('Kursnummer måste anges') : form.courseNumber.setCustomValidity('');
+  form.days.validity.valueMissing ? form.days.setCustomValidity('Antal dagar måste anges') : form.days.setCustomValidity('');
+  form.cost.validity.valueMissing ? form.cost.setCustomValidity('Kostnad måste anges') : form.cost.setCustomValidity('');
+  form.reportValidity();
 
-  if (!editForm.checkValidity()) {
+  if (!form.checkValidity()) {
     fields.forEach(f => {
       if (!f.checkValidity()) f.classList.add('invalid');
     });
   } else {
-    const formData = new FormData(editForm);
+    const formData = new FormData(form);
     const course = {
       title: formData.get('title'),
       courseNumber: formData.get('courseNumber'),
@@ -132,7 +141,7 @@ const updateCourse = async (e, courseId) => {
       alert('Kursen har uppdaterats!');
       overlay.classList.remove('show');
       dialog.classList.remove('show');
-      editForm.reset();
+      form.reset();
       await displayCourseList();
     } catch (error) {
       console.error(error);
