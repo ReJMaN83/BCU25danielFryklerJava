@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Admin - WestCoast Education" />
     <link rel="stylesheet" href="../../assets/site.css" />
+    <script src="https://kit.fontawesome.com/55174c58a9.js" crossorigin="anonymous"></script>
     <title>WestCoast Education | Admin</title>
   </head>
   <body>
@@ -33,8 +34,8 @@
       <article>
         <section class="container">
           <h1>Administration</h1>
-
           <div class="admin-grid">
+
             <div class="admin-panel">
               <h2>Lägg till kurs</h2>
               <form id="add-course-form">
@@ -86,11 +87,16 @@
             </div>
 
             <div class="admin-panel">
+              <h2>Alla kurser</h2>
+              <div id="courses-list"></div>
+            </div>
+
+            <div class="admin-panel">
               <h2>Bokningar per kurs</h2>
               <div id="bookings-list"></div>
             </div>
-          </div>
 
+          </div>
         </section>
       </article>
     </main>
@@ -99,6 +105,59 @@
         <p>&copy; 2025 WestCoast Education</p>
       </div>
     </footer>
+
+    <div id="overlay"></div>
+    <div id="modal">
+      <form id="edit-course-form">
+        <h2>Redigera kurs</h2>
+        <div class="form-group">
+          <label for="edit-title">Kurstitel</label>
+          <input type="text" id="edit-title" name="title" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-courseNumber">Kursnummer</label>
+          <input type="text" id="edit-courseNumber" name="courseNumber" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-days">Antal dagar</label>
+          <input type="number" id="edit-days" name="days" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-cost">Kostnad (kr)</label>
+          <input type="number" id="edit-cost" name="cost" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-teacher">Lärare</label>
+          <input type="text" id="edit-teacher" name="teacher" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-startDate">Startdatum</label>
+          <input type="date" id="edit-startDate" name="startDate" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-imageUrl">Bild-URL</label>
+          <input type="text" id="edit-imageUrl" name="imageUrl" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-description">Beskrivning</label>
+          <textarea id="edit-description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="classroom" value="true" /> Klassrum
+          </label>
+          <label>
+            <input type="checkbox" name="distance" value="true" /> Distans
+          </label>
+          <label>
+            <input type="checkbox" name="popular" value="true" /> Populär
+          </label>
+        </div>
+        <button type="submit" class="btn">Spara ändringar</button>
+        <button type="button" id="closeModal" class="btn btn-cancel">Stäng</button>
+      </form>
+    </div>
+
     <script src="./admin.js" type="module"></script>
   </body>
 </html>

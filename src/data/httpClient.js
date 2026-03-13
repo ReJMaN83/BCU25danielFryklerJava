@@ -23,6 +23,10 @@ export default class HttpClient {
   async post(data) {
     return await this.#sendData('POST', this.#baseUrl, data);
   }
+  
+  async update(id, data) {
+  return await this.#sendData('PUT', `${this.#baseUrl}/${id}`, data);
+}
 
   async #getData(url) {
     try {

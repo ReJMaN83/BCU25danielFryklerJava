@@ -4,6 +4,11 @@
 @import './navbar.css';
 @import './utilities.css';
 
+:root {
+  --max-width: 960px;
+  --page-width: 1200px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +22,7 @@ body {
 }
 
 main {
-  max-width: 1200px;
+  max-width: var(--page-width);
   margin: 0 auto;
 }
 
@@ -48,14 +53,7 @@ a {
   margin-bottom: 2rem;
 }
 
-/* Courses grid */
-#courses-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 2rem 0;
-}
-
+/* Popular courses */
 #popular-courses {
   padding: 2rem 0;
 }
@@ -66,12 +64,20 @@ a {
   color: var(--primary-color);
 }
 
+/* Courses grid */
+#courses-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
 /* Card */
 .card {
   background: #fff;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -117,6 +123,7 @@ a {
 
 #details-area .card img {
   height: 300px;
+  object-fit: cover;
 }
 
 .info {
@@ -150,24 +157,7 @@ a {
   background: var(--primary-color);
 }
 
-/* Booking form */
-
-.invalid {
-  border: 2px solid red !important;
-  border-radius: 0.4rem;
-}
-
-#add-course-form .btn {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: var(--text-color-light);
-}
-
-#add-course-form .btn:hover {
-  background: var(--text-color-active);
-  border-color: var(--text-color-active);
-}
-
+/* Booking */
 .course-summary {
   background: var(--primary-color);
   color: var(--text-color-light);
@@ -219,7 +209,13 @@ a {
   cursor: pointer;
 }
 
-/* Admin */
+/* Invalid */
+.invalid {
+  border: 2px solid red !important;
+  border-radius: 0.4rem;
+}
+
+/* Admin grid */
 .admin-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -231,7 +227,7 @@ a {
   background: #fff;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .admin-panel h2 {
@@ -239,6 +235,78 @@ a {
   margin-bottom: 1.5rem;
 }
 
+/* Add course form */
+#add-course-form .btn {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  margin-top: 0.5rem;
+}
+
+#add-course-form .btn:hover {
+  background: #e65100;
+  border-color: #e65100;
+  color: #fff;
+}
+
+/* Course list i admin */
+#courses-list {
+  background-color: var(--background-light);
+  border: solid 2px var(--primary-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+.course-row-header {
+  font-weight: 600;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color) !important;
+}
+
+#courses-list .course-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: solid 1px navy;
+  padding: 0.5rem 0;
+}
+
+#courses-list .course-row i {
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+#courses-list .course-row i:hover {
+  color: var(--text-color-active);
+}
+
+#courses-list .course-row .course-row-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#courses-list .course-row .course-row-number {
+  flex-shrink: 0;
+  width: 70px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-color-dark);
+}
+
+#courses-list .course-row .course-row-days {
+  flex-shrink: 0;
+  width: 70px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--text-color-dark);
+}
+
+/* Bookings */
 .booking-group {
   margin-bottom: 1.5rem;
 }
@@ -260,6 +328,72 @@ a {
 
 .booking-item span {
   font-weight: 600;
+}
+
+/* Overlay & Modal */
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+#overlay.show {
+  display: block;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  width: 500px;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: solid 1px var(--primary-color);
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  z-index: 11;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#modal.show {
+  display: block;
+}
+
+#modal h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+#modal .btn {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  margin-top: 0.5rem;
+}
+
+#modal .btn:hover {
+  background: #e65100;
+  border-color: #e65100;
+  color: #fff;
+}
+
+#modal .btn-cancel {
+  background: transparent;
+  border-color: red;
+  color: red;
+  margin-left: 0.5rem;
+}
+
+#modal .btn-cancel:hover {
+  background: red;
+  color: #fff;
 }
 
 /* Footer */
