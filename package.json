@@ -5,12 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "json-server --watch src/data/db.json"
+    "server": "json-server --watch src/data/db.json",
+    "test": "vitest",
+    "test-ui": "vitest --ui"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "json-server": "^0.17.4"
+    "happy-dom": "^20.8.4",
+    "json-server": "^0.17.4",
+    "vitest": "^4.1.0"
   }
 }

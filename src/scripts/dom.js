@@ -8,6 +8,9 @@ export const createImage = (imageUrl, id) => {
   const image = document.createElement('img');
   image.setAttribute('src', imageUrl);
   image.setAttribute('id', id);
+  image.onerror = () => {
+    image.setAttribute('src', 'https://placehold.co/800x400?text=Ingen+bild');
+  };
   return image;
 };
 

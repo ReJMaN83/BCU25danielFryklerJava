@@ -158,6 +158,11 @@ a {
 }
 
 /* Booking */
+
+.goback {
+  color: var(--primary-color);
+}
+
 .course-summary {
   background: var(--primary-color);
   color: var(--text-color-light);
