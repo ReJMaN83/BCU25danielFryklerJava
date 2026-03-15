@@ -66,7 +66,7 @@ const handleSubmit = (e) => {
       courseTypeInput.setCustomValidity('');
     }
   }
-  console.log(document.querySelector('input[name="courseType"]'));
+  
   form.reportValidity();
 
   if (!form.checkValidity()) {
