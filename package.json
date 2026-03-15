@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "json-server --watch src/data/db.json",
     "test": "vitest",
-    "test-ui": "vitest --ui"
+    "test-ui": "vitest --ui",
+    "build": "tsc --watch --project tsconfig.build.json"
   },
   "keywords": [],
   "author": "",

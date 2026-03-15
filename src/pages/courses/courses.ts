@@ -1,19 +1,19 @@
 import HttpClient from '../../data/httpClient.js';
 import { createCard, createImage, createSpan, addCardNavigateClickHandler } from '../../scripts/dom.js';
 
-const coursesGrid = document.querySelector('#courses-grid');
+const coursesGrid = document.querySelector('#courses-grid') as HTMLDivElement;
 
-const initApp = async () => {
+const initApp = async (): Promise<void> => {
   try {
-    const courses = await new HttpClient('courses').listAll();
+    const courses = await new HttpClient<any[]>('courses').listAll();
     displayCourses(courses);
   } catch (error) {
     console.error(error);
   }
 };
 
-const displayCourses = (courses) => {
-  courses.map((course) => {
+const displayCourses = (courses: any[]): void => {
+  courses.map((course: any) => {
     const card = createCard();
     const image = createImage(course.imageUrl, course.id);
     const title = createSpan(course.title, 'course-title');
@@ -25,8 +25,8 @@ const displayCourses = (courses) => {
     coursesGrid.appendChild(card);
   });
 
-  const images = document.querySelectorAll('#courses-grid .card img');
-  addCardNavigateClickHandler(images, '../course-details/course-details.html');
+  const images = document.querySelectorAll('#courses-grid .card img') as NodeListOf<HTMLImageElement>;
+  addCardNavigateClickHandler(Array.from(images), '../course-details/course-details.html');
 };
 
 document.addEventListener('DOMContentLoaded', initApp);

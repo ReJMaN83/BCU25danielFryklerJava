@@ -1,34 +1,34 @@
-export const createCard = () => {
+export const createCard = (): HTMLElement => {
   const card = document.createElement('section');
   card.classList.add('card');
   return card;
 };
 
-export const createImage = (imageUrl, id) => {
+export const createImage = (imageUrl: string, id: string | number): HTMLImageElement => {
   const image = document.createElement('img');
   image.setAttribute('src', imageUrl);
-  image.setAttribute('id', id);
+  image.setAttribute('id', id.toString());
   image.onerror = () => {
     image.setAttribute('src', 'https://placehold.co/800x400?text=Ingen+bild');
   };
   return image;
 };
 
-export const createSpan = (text, className) => {
+export const createSpan = (text: string, className: string): HTMLSpanElement => {
   const span = document.createElement('span');
   span.textContent = text;
   span.classList.add(className);
   return span;
 };
 
-export const createHeader = (text, headerType, classes) => {
+export const createHeader = (text: string, headerType: string, classes: string): HTMLElement => {
   const header = document.createElement(headerType);
   header.setAttribute('class', classes);
   header.textContent = text;
   return header;
 };
 
-export const addCardNavigateClickHandler = (cards, url) => {
+export const addCardNavigateClickHandler = (cards: HTMLImageElement[], url: string): void => {
   cards.forEach((card) => {
     const id = card.getAttribute('id');
     card.addEventListener('click', () => {
@@ -37,7 +37,7 @@ export const addCardNavigateClickHandler = (cards, url) => {
   });
 };
 
-export const createCourseDetailsView = (course) => {
+export const createCourseDetailsView = (course: any): string => {
   return `
     <a class="goback" href="../courses/courses.html">
       <i class="fa-regular fa-arrow-left-long"></i> Tillbaka till kurser
