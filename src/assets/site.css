@@ -266,6 +266,17 @@ a {
 }
 
 /* Course list i admin */
+
+#courses-list .course-row i.fa-trash-can {
+  cursor: pointer;
+  flex-shrink: 0;
+  color: red;
+}
+
+#courses-list .course-row i.fa-trash-can:hover {
+  color: darkred;
+}
+
 #courses-list {
   background-color: var(--background-light);
   border: solid 2px var(--primary-color);

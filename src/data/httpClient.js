@@ -28,6 +28,23 @@ export default class HttpClient {
   return await this.#sendData('PUT', `${this.#baseUrl}/${id}`, data);
 }
 
+  async delete(id) {
+    try {
+      const response = await fetch(`${this.#baseUrl}/${id}`, {
+       method: 'DELETE',
+        headers: this.#headers
+     });
+
+     if (response.ok) {
+       return true;
+      } else {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+     throw error;
+   }
+  }
+
   async #getData(url) {
     try {
       const response = await fetch(url, { headers: this.#headers });

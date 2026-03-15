@@ -28,6 +28,7 @@ const displayCourseList = async () => {
   header.classList.add('course-row', 'course-row-header');
   header.innerHTML = `
     <i></i>
+    <i></i>
     <div class="course-row-title">Kurstitel</div>
     <div class="course-row-number">Kursnummer</div>
     <div class="course-row-days">Dagar</div>
@@ -43,6 +44,11 @@ const displayCourseList = async () => {
     icon.setAttribute('id', course.id);
     icon.addEventListener('click', displayCourseModal);
 
+    const deleteIcon = document.createElement('i');
+    deleteIcon.classList.add('fa-light', 'fa-trash-can');
+    deleteIcon.setAttribute('id', course.id);
+    deleteIcon.addEventListener('click', deleteCourse);
+
     const titleDiv = document.createElement('div');
     titleDiv.classList.add('course-row-title');
     titleDiv.textContent = course.title;
@@ -56,6 +62,7 @@ const displayCourseList = async () => {
     daysDiv.textContent = course.days + ' dagar';
 
     row.appendChild(icon);
+    row.appendChild(deleteIcon);
     row.appendChild(titleDiv);
     row.appendChild(numberDiv);
     row.appendChild(daysDiv);
@@ -149,6 +156,20 @@ const updateCourse = async (e, courseId, form) => {
   }
 };
 
+const deleteCourse = async (e) => {
+  const courseId = e.target.getAttribute('id');
+  const confirmed = confirm('Är du säker på att du vill ta bort kursen?');
+
+  if (confirmed) {
+    try {
+      await new HttpClient('courses').delete(courseId);
+      await displayCourseList();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+};
+
 const displayBookings = async () => {
   const courses = await new HttpClient('courses').listAll();
   const bookings = await new HttpClient('bookings').listAll();
@@ -196,6 +217,7 @@ const handleSubmit = async (e) => {
   form.startDate.validity.valueMissing ? form.startDate.setCustomValidity('Startdatum måste anges') : form.startDate.setCustomValidity('');
   form.imageUrl.validity.valueMissing ? form.imageUrl.setCustomValidity('Bild-URL måste anges') : form.imageUrl.setCustomValidity('');
   form.description.validity.valueMissing ? form.description.setCustomValidity('Beskrivning måste anges') : form.description.setCustomValidity('');
+
   const classroomChecked = form.querySelector('input[name="classroom"]').checked;
   const distanceChecked = form.querySelector('input[name="distance"]').checked;
 
@@ -204,7 +226,8 @@ const handleSubmit = async (e) => {
   } else {
     form.querySelector('input[name="classroom"]').setCustomValidity('');
   }
-    form.reportValidity();
+
+  form.reportValidity();
 
   if (!form.checkValidity()) {
     fields.forEach(f => {
