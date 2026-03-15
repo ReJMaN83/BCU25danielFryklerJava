@@ -33,13 +33,13 @@ const displayCourseSummary = (course) => {
 const displayCourseType = (course) => {
   if (course.classroom) {
     const label = document.createElement('label');
-    label.innerHTML = `<input type="radio" name="courseType" value="classroom" required /> Klassrum`;
+    label.innerHTML = `<input type="radio" name="courseType" value="classroom" /> Klassrum`;
     courseType.appendChild(label);
   }
 
   if (course.distance) {
     const label = document.createElement('label');
-    label.innerHTML = `<input type="radio" name="courseType" value="distance" required /> Distans`;
+    label.innerHTML = `<input type="radio" name="courseType" value="distance" /> Distans`;
     courseType.appendChild(label);
   }
 };
@@ -55,6 +55,18 @@ const handleSubmit = (e) => {
   form.address.validity.valueMissing ? form.address.setCustomValidity('Fakturaadress måste anges') : form.address.setCustomValidity('');
   form.email.validity.valueMissing ? form.email.setCustomValidity('E-postadress måste anges') : form.email.setCustomValidity('');
   form.phone.validity.valueMissing ? form.phone.setCustomValidity('Mobilnummer måste anges') : form.phone.setCustomValidity('');
+
+  const courseTypeInput = form.querySelector('input[name="courseType"]');
+  const courseTypeSelected = form.querySelector('input[name="courseType"]:checked');
+
+  if (courseTypeInput) {
+    if (!courseTypeSelected) {
+      courseTypeInput.setCustomValidity('Du måste välja kurstyp');
+    } else {
+      courseTypeInput.setCustomValidity('');
+    }
+  }
+  console.log(document.querySelector('input[name="courseType"]'));
   form.reportValidity();
 
   if (!form.checkValidity()) {
@@ -63,24 +75,25 @@ const handleSubmit = (e) => {
         f.classList.add('invalid');
       }
     });
-  } else {
-    fields.forEach(f => f.classList.remove('invalid'));
-
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    const booking = {
-      courseId: selectedCourse.id,
-      courseTitle: selectedCourse.title,
-      name: data.name,
-      address: data.address,
-      email: data.email,
-      phone: data.phone,
-      courseType: data.courseType
-    };
-
-    saveBooking(booking);
+    return;
   }
+
+  fields.forEach(f => f.classList.remove('invalid'));
+
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  const booking = {
+    courseId: selectedCourse.id,
+    courseTitle: selectedCourse.title,
+    name: data.name,
+    address: data.address,
+    email: data.email,
+    phone: data.phone,
+    courseType: data.courseType
+  };
+
+  saveBooking(booking);
 };
 
 const saveBooking = async (booking) => {

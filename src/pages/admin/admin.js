@@ -196,7 +196,15 @@ const handleSubmit = async (e) => {
   form.startDate.validity.valueMissing ? form.startDate.setCustomValidity('Startdatum måste anges') : form.startDate.setCustomValidity('');
   form.imageUrl.validity.valueMissing ? form.imageUrl.setCustomValidity('Bild-URL måste anges') : form.imageUrl.setCustomValidity('');
   form.description.validity.valueMissing ? form.description.setCustomValidity('Beskrivning måste anges') : form.description.setCustomValidity('');
-  form.reportValidity();
+  const classroomChecked = form.querySelector('input[name="classroom"]').checked;
+  const distanceChecked = form.querySelector('input[name="distance"]').checked;
+
+  if (!classroomChecked && !distanceChecked) {
+    form.querySelector('input[name="classroom"]').setCustomValidity('Minst ett alternativ måste väljas');
+  } else {
+    form.querySelector('input[name="classroom"]').setCustomValidity('');
+  }
+    form.reportValidity();
 
   if (!form.checkValidity()) {
     fields.forEach(f => {
