@@ -1,4 +1,6 @@
 import HttpClient from '../../data/httpClient.js';
+import { Course } from '../../models/course.js';
+import { Booking } from '../../models/booking.js';
 
 const form = document.querySelector('#add-course-form') as HTMLFormElement;
 const bookingsList = document.querySelector('#bookings-list') as HTMLDivElement;
@@ -20,7 +22,7 @@ const initApp = async (): Promise<void> => {
 };
 
 const displayCourseList = async (): Promise<void> => {
-  const courses = await new HttpClient<any[]>('courses').listAll();
+  const courses = await new HttpClient<Course[]>('courses').listAll();
   const coursesList = document.querySelector('#courses-list') as HTMLDivElement;
   coursesList.innerHTML = '';
 
@@ -35,7 +37,7 @@ const displayCourseList = async (): Promise<void> => {
   `;
   coursesList.appendChild(header);
 
-  courses.map((course: any) => {
+  courses.map((course: Course) => {
     const row = document.createElement('section');
     row.classList.add('course-row');
 
@@ -75,7 +77,7 @@ const displayCourseModal = async (e: Event): Promise<void> => {
   e.preventDefault();
   const icon = e.target as HTMLElement;
   const courseId = icon.getAttribute('id') as string;
-  const course = await new HttpClient<any>('courses').findById(courseId);
+  const course = await new HttpClient<Course>('courses').findById(courseId);
 
   overlay.classList.add('show');
   dialog.classList.add('show');
@@ -96,7 +98,7 @@ const displayCourseModal = async (e: Event): Promise<void> => {
   newEditForm.addEventListener('submit', (e: Event) => updateCourse(e, courseId, newEditForm));
 };
 
-const populateModal = (course: any): void => {
+const populateModal = (course: Course): void => {
   const editForm = document.querySelector('#edit-course-form') as HTMLFormElement;
   const titleInput = editForm.querySelector<HTMLInputElement>('[name="title"]')!;
   const courseNumberInput = editForm.querySelector<HTMLInputElement>('[name="courseNumber"]')!;
@@ -112,8 +114,8 @@ const populateModal = (course: any): void => {
 
   titleInput.value = course.title;
   courseNumberInput.value = course.courseNumber;
-  daysInput.value = course.days;
-  costInput.value = course.cost;
+  daysInput.value = course.days.toString();
+  costInput.value = course.cost.toString();
   teacherInput.value = course.teacher;
   startDateInput.value = course.startDate;
   imageUrlInput.value = course.imageUrl;
@@ -146,7 +148,8 @@ const updateCourse = async (e: Event, courseId: string, form: HTMLFormElement): 
     });
   } else {
     const formData = new FormData(form);
-    const course = {
+    const course: Course = {
+      id: courseId,
       title: formData.get('title') as string,
       courseNumber: formData.get('courseNumber') as string,
       days: Number(formData.get('days')),
@@ -161,7 +164,7 @@ const updateCourse = async (e: Event, courseId: string, form: HTMLFormElement): 
     };
 
     try {
-      await new HttpClient<any>('courses').update(courseId, course);
+      await new HttpClient<Course>('courses').update(courseId, course);
       alert('Kursen har uppdaterats!');
       overlay.classList.remove('show');
       dialog.classList.remove('show');
@@ -180,7 +183,7 @@ const deleteCourse = async (e: Event): Promise<void> => {
 
   if (confirmed) {
     try {
-      await new HttpClient<any>('courses').delete(courseId);
+      await new HttpClient<Course>('courses').delete(courseId);
       await displayCourseList();
     } catch (error) {
       console.error(error);
@@ -189,23 +192,23 @@ const deleteCourse = async (e: Event): Promise<void> => {
 };
 
 const displayBookings = async (): Promise<void> => {
-  const courses = await new HttpClient<any[]>('courses').listAll();
-  const bookings = await new HttpClient<any[]>('bookings').listAll();
+  const courses = await new HttpClient<Course[]>('courses').listAll();
+  const bookings = await new HttpClient<Booking[]>('bookings').listAll();
 
   if (bookings.length === 0) {
     bookingsList.innerHTML = '<p>Inga bokningar ännu.</p>';
     return;
   }
 
-  courses.map((course: any) => {
-    const courseBookings = bookings.filter((b: any) => b.courseId === course.id);
+  courses.map((course: Course) => {
+    const courseBookings = bookings.filter((b: Booking) => b.courseId === course.id);
     if (courseBookings.length === 0) return;
 
     const section = document.createElement('section');
     section.classList.add('booking-group');
     section.innerHTML = `<h3>${course.title}</h3>`;
 
-    courseBookings.map((booking: any) => {
+    courseBookings.map((booking: Booking) => {
       const item = document.createElement('div');
       item.classList.add('booking-item');
       item.innerHTML = `
@@ -261,7 +264,8 @@ const handleSubmit = async (e: Event): Promise<void> => {
     });
   } else {
     const formData = new FormData(form);
-    const course = {
+    const course: Course = {
+      id: '',
       title: formData.get('title') as string,
       courseNumber: formData.get('courseNumber') as string,
       days: Number(formData.get('days')),
@@ -276,7 +280,7 @@ const handleSubmit = async (e: Event): Promise<void> => {
     };
 
     try {
-      await new HttpClient<any>('courses').post(course);
+      await new HttpClient<Course>('courses').post(course);
       alert('Kursen har lagts till!');
       form.reset();
       bookingsList.innerHTML = '';

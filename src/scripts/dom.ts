@@ -1,3 +1,6 @@
+import { Course } from '../models/course.js';
+import { HeadingEnums } from '../models/enums.js';
+
 export const createCard = (): HTMLElement => {
   const card = document.createElement('section');
   card.classList.add('card');
@@ -21,7 +24,7 @@ export const createSpan = (text: string, className: string): HTMLSpanElement => 
   return span;
 };
 
-export const createHeader = (text: string, headerType: string, classes: string): HTMLElement => {
+export const createHeader = (text: string, headerType: HeadingEnums, classes: string): HTMLElement => {
   const header = document.createElement(headerType);
   header.setAttribute('class', classes);
   header.textContent = text;
@@ -37,7 +40,7 @@ export const addCardNavigateClickHandler = (cards: HTMLImageElement[], url: stri
   });
 };
 
-export const createCourseDetailsView = (course: any): string => {
+export const createCourseDetailsView = (course: Course): string => {
   return `
     <a class="goback" href="../courses/courses.html">
       <i class="fa-regular fa-arrow-left-long"></i> Tillbaka till kurser

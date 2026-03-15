@@ -1,19 +1,20 @@
 import HttpClient from '../../data/httpClient.js';
 import { createCard, createImage, createSpan, addCardNavigateClickHandler } from '../../scripts/dom.js';
+import { Course } from '../../models/course.js';
 
 const coursesGrid = document.querySelector('#courses-grid') as HTMLDivElement;
 
 const initApp = async (): Promise<void> => {
   try {
-    const courses = await new HttpClient<any[]>('courses').listAll();
+    const courses = await new HttpClient<Course[]>('courses').listAll();
     displayCourses(courses);
   } catch (error) {
     console.error(error);
   }
 };
 
-const displayCourses = (courses: any[]): void => {
-  courses.map((course: any) => {
+const displayCourses = (courses: Course[]): void => {
+  courses.map((course: Course) => {
     const card = createCard();
     const image = createImage(course.imageUrl, course.id);
     const title = createSpan(course.title, 'course-title');

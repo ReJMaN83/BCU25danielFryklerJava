@@ -92,8 +92,8 @@ const populateModal = (course) => {
     const popularInput = editForm.querySelector('[name="popular"]');
     titleInput.value = course.title;
     courseNumberInput.value = course.courseNumber;
-    daysInput.value = course.days;
-    costInput.value = course.cost;
+    daysInput.value = course.days.toString();
+    costInput.value = course.cost.toString();
     teacherInput.value = course.teacher;
     startDateInput.value = course.startDate;
     imageUrlInput.value = course.imageUrl;
@@ -124,6 +124,7 @@ const updateCourse = async (e, courseId, form) => {
     else {
         const formData = new FormData(form);
         const course = {
+            id: courseId,
             title: formData.get('title'),
             courseNumber: formData.get('courseNumber'),
             days: Number(formData.get('days')),
@@ -229,6 +230,7 @@ const handleSubmit = async (e) => {
     else {
         const formData = new FormData(form);
         const course = {
+            id: '',
             title: formData.get('title'),
             courseNumber: formData.get('courseNumber'),
             days: Number(formData.get('days')),

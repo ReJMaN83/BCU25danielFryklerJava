@@ -1,16 +1,18 @@
 import HttpClient from '../../data/httpClient.js';
+import { Course } from '../../models/course.js';
+import { Booking } from '../../models/booking.js';
 
 const form = document.querySelector('#booking-form') as HTMLFormElement;
 form.noValidate = true;
 const courseSummary = document.querySelector('#course-summary') as HTMLDivElement;
 const courseType = document.querySelector('#course-type') as HTMLDivElement;
 
-let selectedCourse: any = null;
+let selectedCourse: Course | null = null;
 
 const initApp = async (): Promise<void> => {
   try {
     const courseId = location.search.split('=')[1];
-    selectedCourse = await new HttpClient<any>('courses').findById(courseId);
+    selectedCourse = await new HttpClient<Course>('courses').findById(courseId);
     displayCourseSummary(selectedCourse);
     displayCourseType(selectedCourse);
   } catch (error) {
@@ -18,7 +20,7 @@ const initApp = async (): Promise<void> => {
   }
 };
 
-const displayCourseSummary = (course: any): void => {
+const displayCourseSummary = (course: Course): void => {
   courseSummary.innerHTML = `
     <div class="course-summary">
       <h2>${course.title}</h2>
@@ -30,7 +32,7 @@ const displayCourseSummary = (course: any): void => {
   `;
 };
 
-const displayCourseType = (course: any): void => {
+const displayCourseType = (course: Course): void => {
   if (course.classroom) {
     const label = document.createElement('label');
     label.innerHTML = `<input type="radio" name="courseType" value="classroom" /> Klassrum`;
@@ -84,9 +86,9 @@ const handleSubmit = (e: Event): void => {
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  const booking = {
-    courseId: selectedCourse.id,
-    courseTitle: selectedCourse.title,
+  const booking: Booking = {
+    courseId: selectedCourse!.id,
+    courseTitle: selectedCourse!.title,
     name: data.name as string,
     address: data.address as string,
     email: data.email as string,
@@ -97,9 +99,9 @@ const handleSubmit = (e: Event): void => {
   saveBooking(booking);
 };
 
-const saveBooking = async (booking: any): Promise<void> => {
+const saveBooking = async (booking: Booking): Promise<void> => {
   try {
-    await new HttpClient<any>('bookings').post(booking);
+    await new HttpClient<Booking>('bookings').post(booking);
     alert('Din bokning är registrerad!');
     location.href = '../courses/courses.html';
   } catch (error) {

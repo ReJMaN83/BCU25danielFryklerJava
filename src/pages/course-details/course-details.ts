@@ -1,5 +1,6 @@
 import HttpClient from '../../data/httpClient.js';
 import { createCourseDetailsView } from '../../scripts/dom.js';
+import { Course } from '../../models/course.js';
 
 const initApp = async (): Promise<void> => {
   try {
@@ -10,14 +11,14 @@ const initApp = async (): Promise<void> => {
       return;
     }
 
-    const course = await new HttpClient<any>('courses').findById(courseId);
+    const course = await new HttpClient<Course>('courses').findById(courseId);
     displayCourse(course);
   } catch (error) {
     console.error(error);
   }
 };
 
-const displayCourse = (course: any): void => {
+const displayCourse = (course: Course): void => {
   document.querySelector('#details-area')!.innerHTML = createCourseDetailsView(course);
 };
 

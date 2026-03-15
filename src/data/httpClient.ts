@@ -1,89 +1,106 @@
+import { IHttpClient } from '../interfaces/IHttpClient.js';
 import { settings } from '../config/env.js';
+import { CourseResponseType } from './responseTypes.js';
 
-export default class HttpClient<T> {
-  readonly #baseUrl: string = settings.BASE_URL;
-  readonly #headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    'x-apikey': settings.API_KEY,
-    'cache-control': 'no-cache'
-  };
+export default class HttpClient<T> implements IHttpClient<T> {
+  private _url: string;
+  private _headers: Record<string, string>;
 
   constructor(resource: string) {
-    this.#baseUrl = `${this.#baseUrl}${resource}`;
+    this._url = settings.BASE_URL + resource;
+    this._headers = {
+      'content-type': 'application/json',
+      'x-apikey': settings.API_KEY,
+      'cache-control': 'no-cache'
+    };
   }
 
   async listAll(): Promise<T> {
-    return await this.#getData(this.#baseUrl);
+    return await this.getData(this._url);
   }
 
   async findById(id: string): Promise<T> {
-    return await this.#getData(`${this.#baseUrl}/${id}`);
+    return await this.getData(`${this._url}/${id}`);
   }
 
   async post(data: T): Promise<T> {
-    return await this.#sendData('POST', this.#baseUrl, data);
+    return await this.save(data);
   }
 
   async update(id: string, data: T): Promise<T> {
-    return await this.#sendData('PUT', `${this.#baseUrl}/${id}`, data);
+    return await this.updateData(`${this._url}/${id}`, data);
   }
 
   async delete(id: string): Promise<boolean> {
-    try {
-      const response = await fetch(`${this.#baseUrl}/${id}`, {
-        method: 'DELETE',
-        headers: this.#headers
-      });
+    const response = await fetch(`${this._url}/${id}`, {
+      method: 'DELETE',
+      headers: this._headers
+    });
 
-      if (response.ok) {
-        return true;
-      } else {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-    } catch (error) {
-      throw error;
+    if (response.ok) {
+      return true;
+    } else {
+      throw new Error(`${response.status} ${response.statusText}`);
     }
   }
 
-  async #getData(url: string): Promise<T> {
-    try {
-      const response = await fetch(url, { headers: this.#headers });
-
-      if (response.ok) {
-        const result = await response.json();
-
-        if (Array.isArray(result)) {
-          const data = result.map((item: any) => ({ ...item, id: item._id }));
-          data.map((item: any) => { delete item._id; return item; });
-          return data as T;
-        } else {
-          const data = { ...result, id: result._id };
-          delete data._id;
-          return data as T;
-        }
-      } else {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async #sendData(method: string, url: string, data: T): Promise<T> {
+  private async getData(url: string): Promise<T> {
     try {
       const response = await fetch(url, {
-        method,
-        headers: this.#headers,
-        body: JSON.stringify(data)
+        method: 'GET',
+        headers: this._headers
       });
 
       if (response.ok) {
-        return await response.json() as T;
+        const result = await response.json() as CourseResponseType[] | CourseResponseType;
+        let data;
+
+        if (Array.isArray(result)) {
+          data = result.map(item => {
+            return { ...item, id: item._id };
+          });
+          data.map(item => {
+            delete item._id;
+            return item;
+          });
+        } else {
+          data = { ...result, id: result._id };
+          delete data._id;
+        }
+        return data as T;
       } else {
         throw new Error(`${response.status} ${response.statusText}`);
       }
     } catch (error) {
       throw error;
+    }
+  }
+
+  private async save(data: T): Promise<T> {
+    const response = await fetch(this._url, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      return await response.json() as T;
+    } else {
+      throw new Error(response.statusText);
+    }
+  }
+
+  private async updateData(url: string, data: T): Promise<T> {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: this._headers,
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      return await response.json() as T;
+    } else {
+      throw new Error(response.statusText);
     }
   }
 }

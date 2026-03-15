@@ -1,6 +1,7 @@
 import { it, expect, describe, vi } from 'vitest';
 import { Window } from 'happy-dom';
-import { createCard, createImage, createSpan, createHeader } from './dom';
+import { createCard, createImage, createSpan, createHeader } from './dom.js';
+import { HeadingEnums } from '../models/enums.js';
 
 const window = new Window();
 const document = window.document;
@@ -41,9 +42,8 @@ describe('DOM', () => {
   describe('createHeader', () => {
     it('should return a header element with correct text and class', () => {
       const text = 'Välkommen';
-      const headerType = 'h1';
       const classes = 'page-title';
-      const header = createHeader(text, headerType, classes);
+      const header = createHeader(text, HeadingEnums.H1, classes);
       expect(header.nodeName).toBe('H1');
       expect(header.textContent).toBe(text);
       expect(header.className).toBe(classes);
