@@ -159,6 +159,18 @@ a {
 
 /* Booking */
 
+#booking-form .btn {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  margin-top: 0.5rem;
+}
+
+#booking-form .btn:hover {
+  background: #e65100;
+  border-color: #e65100;
+  color: #fff;
+}
+
 .goback {
   color: var(--primary-color);
 }

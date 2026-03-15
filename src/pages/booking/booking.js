@@ -49,10 +49,8 @@ const handleSubmit = (e) => {
 
   const fields = Array.from(form.elements);
 
-  // Återställ fälten
   fields.forEach(f => f.classList.remove('invalid'));
 
-  // Validera varje fält
   form.name.validity.valueMissing ? form.name.setCustomValidity('Namn måste anges') : form.name.setCustomValidity('');
   form.address.validity.valueMissing ? form.address.setCustomValidity('Fakturaadress måste anges') : form.address.setCustomValidity('');
   form.email.validity.valueMissing ? form.email.setCustomValidity('E-postadress måste anges') : form.email.setCustomValidity('');
@@ -67,11 +65,25 @@ const handleSubmit = (e) => {
     });
   } else {
     fields.forEach(f => f.classList.remove('invalid'));
-    saveBooking();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const booking = {
+      courseId: selectedCourse.id,
+      courseTitle: selectedCourse.title,
+      name: data.name,
+      address: data.address,
+      email: data.email,
+      phone: data.phone,
+      courseType: data.courseType
+    };
+
+    saveBooking(booking);
   }
 };
 
-const saveBooking = async () => {
+const saveBooking = async (booking) => {
   try {
     await new HttpClient('bookings').post(booking);
     alert('Din bokning är registrerad!');
