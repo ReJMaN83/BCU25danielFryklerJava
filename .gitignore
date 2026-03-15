@@ -1,2 +1,4 @@
 node_modules/
 src/config/env.js
+src/config/env.ts
+dist/config/env.js
